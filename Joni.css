@@ -1,7 +1,7 @@
 @charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=PT+Sans:400,700,300);
 body {
-  text-align: center;
+  
   font-family: Arial;
   background-color: #BB4A9F;
   background-image: -webkit-linear-gradient(-320deg, #BB4A9F 0%, #E4E5D7 35%, #BEE8D7 65%, #51C8C8 90%);
