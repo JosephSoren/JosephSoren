@@ -1,0 +1,312 @@
+body#layout .hidden,
+ body#layout .invisible {
+ display: inherit;
+ }
+ body#layout .navigation {
+ display: none;
+ }
+ body#layout .page,
+ body#layout .sidebar_top,
+ body#layout .sidebar_bottom {
+ display: inline-block;
+ left: inherit;
+ position: relative;
+ vertical-align: top;
+ }
+ body#layout .page {
+ float: right;
+ margin-left: 20px;
+ width: 55%;
+ }
+ body#layout .sidebar-container {
+ float: right;
+ width: 40%;
+ }
+ body#layout .hamburger-menu {
+ display: none;
+ }
+.fixed {
+    position:fixed;
+    bottom:0;
+    width: 100%; 
+    z-index:99;}
+    .fixed1{
+    position:fixed;
+    bottom:86.5px;left:0;
+    width: 100%;height:40px; 
+    z-index:999; }
+    input,span{text-align:center;height:65px;width:95%;font-size:20px;font-weight:400;;color:#424242;background-color:white;border:0px;}
+    .input-group-append{text-align:right;padding:5px;}
+    .shadow-box1{
+    
+    margin-top:5px;margin-right:0px;text-align:center; border: 1px #ffffff solid;
+    
+    padding:5px;
+    
+    -webkit-box-shadow: 0 10px 6px -6px #777;
+    
+    -moz-box-shadow: 0 10px 6px -6px #777;
+    
+    box-shadow: 0 10px 6px -6px #777;
+    
+    
+    
+    width:responsive;
+    
+    text-align:center;
+    
+    }
+    .responsive
+    {height:auto;
+    width:90%;
+    
+    }
+    
+   h1,h2,h3,h4,h5,h6 {
+    font-family: "Lora", sans-serif;
+    color:black; }
+    .w3-bar,button {font-family:"Lora", sans-serif}
+    .fa-anchor,.fa-coffee {font-size:20px}
+   
+     body {
+    
+    font-family:lora;
+    
+    font-size:16px;
+    color:#000000;
+    background: linear-gradient(45deg,#e8effd 0%,#d6e3f5 100%);
+    
+    }
+    #start_button {
+
+    border: 0;
+
+    background-color:transparent;
+
+    padding: 0;
+
+    }
+
+    .interim {
+
+    color: =white;
+
+    }
+    #content{display:none;}
+   
+    #loader{
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    }
+    #loader img{width:200px;}
+  </style>
+  <style>
+  .resp-sharing-button__link,
+.resp-sharing-button__icon {
+  display: inline-block
+}
+
+.resp-sharing-button__link {
+  text-decoration: none;
+  color: #fff;
+  margin: 0.5em
+}
+
+.resp-sharing-button {
+  border-radius: 2px;
+  transition: 25ms ease-out;
+  padding: 0.1em 0.45em;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif
+}
+
+.resp-sharing-button__icon svg {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.4em;
+  vertical-align: top
+}
+
+.resp-sharing-button--small svg {
+  margin: 0;
+  vertical-align: middle
+}
+
+/* Non solid icons get a stroke */
+.resp-sharing-button__icon {
+  stroke: #fff;
+  fill: none
+}
+
+/* Solid icons get a fill */
+.resp-sharing-button__icon--solid,
+.resp-sharing-button__icon--solidcircle {
+  fill: #fff;
+  stroke: none
+}
+
+.resp-sharing-button--twitter {
+  background-color: #55acee
+}
+
+.resp-sharing-button--twitter:hover {
+  background-color: #2795e9
+}
+
+.resp-sharing-button--pinterest {
+  background-color: #bd081c
+}
+
+.resp-sharing-button--pinterest:hover {
+  background-color: #8c0615
+}
+
+.resp-sharing-button--facebook {
+  background-color: #3b5998
+}
+
+.resp-sharing-button--facebook:hover {
+  background-color: #2d4373
+}
+
+.resp-sharing-button--tumblr {
+  background-color: #35465C
+}
+
+.resp-sharing-button--tumblr:hover {
+  background-color: #222d3c
+}
+
+.resp-sharing-button--reddit {
+  background-color: #5f99cf
+}
+
+.resp-sharing-button--reddit:hover {
+  background-color: #3a80c1
+}
+
+.resp-sharing-button--google {
+  background-color: #dd4b39
+}
+
+.resp-sharing-button--google:hover {
+  background-color: #c23321
+}
+
+.resp-sharing-button--linkedin {
+  background-color: #0077b5
+}
+
+.resp-sharing-button--linkedin:hover {
+  background-color: #046293
+}
+
+.resp-sharing-button--email {
+  background-color: #777
+}
+
+.resp-sharing-button--email:hover {
+  background-color: #5e5e5e
+}
+
+.resp-sharing-button--xing {
+  background-color: #1a7576
+}
+
+.resp-sharing-button--xing:hover {
+  background-color: #114c4c
+}
+
+.resp-sharing-button--whatsapp {
+  background-color: #25D366
+}
+
+.resp-sharing-button--whatsapp:hover {
+  background-color: #1da851
+}
+
+.resp-sharing-button--hackernews {
+background-color: #FF6600
+}
+.resp-sharing-button--hackernews:hover, .resp-sharing-button--hackernews:focus {   background-color: #FB6200 }
+
+.resp-sharing-button--vk {
+  background-color: #507299
+}
+
+.resp-sharing-button--vk:hover {
+  background-color: #43648c
+}
+
+.resp-sharing-button--facebook {
+  background-color: #3b5998;
+  border-color: #3b5998;
+}
+
+.resp-sharing-button--facebook:hover,
+.resp-sharing-button--facebook:active {
+  background-color: #2d4373;
+  border-color: #2d4373;
+}
+
+.resp-sharing-button--whatsapp {
+  background-color: #25D366;
+  border-color: #25D366;
+}
+
+.resp-sharing-button--whatsapp:hover,
+.resp-sharing-button--whatsapp:active {
+  background-color: #1DA851;
+  border-color: #1DA851;
+}
+.div1{color:grey;text-align:center;
+}
+    
+   .btn{
+   position: relative;
+   display: inline-flex;
+   height: 60px;
+   width: 200px;
+   border-radius: 5px;
+   margin: 17px 20px;
+   overflow: hidden;
+   transition: all .1s;
+   
+   }
+   .btn .inner{
+   position: absolute;
+   width: 300%;
+   height: 100%;
+   left: -100%;
+   z-index: -1;
+   transition: all .1s;
+   
+   }
+   .btn button{
+   text-align:center;
+   height: 100%;
+   width: 100%;
+   border: none;
+   outline: none;
+   background: none;
+   color: white;
+   font-size: 20px;
+   cursor: pointer;
+   letter-spacing: 1px;
+   text-transform: uppercase;
+   font-family: 'Montserrat', sans-serif;
+   }
+   .btn:hover{
+   transform: scale(1.03);
+   }
+   .btn:hover .inner{
+   left: 0;
+   }
+   .btn1 .inner{
+   background: -webkit-linear-gradient(right, #00dbde,#fc00ff,#00dbde,#fc00ff);
+   }
