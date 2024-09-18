@@ -1,1 +1,619 @@
-helloo nisha 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Shadow and Blur Tool</title>
+    <style>
+        
+        .header {
+            background-color: #fff;
+            width: 100%;
+            margin: 0px;
+            border-bottom: 2px solid #cfd6ce;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .controls{border:1px solid red;}
+        .canvas-container {width:100%;}
+        @media (min-width:400px) {
+        .controls {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            width: 30%;
+        }
+
+        .control-item {
+
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 900px;
+            ;
+            border: 0px solid red;
+        }
+
+        .controls label {
+            float: left;
+            font-size: 19x;
+            font-weight: bold;
+            color: #555;
+            gap: 5px;
+        }
+
+        .controls input[type="range"],
+        .controls input[type="number"],
+        .controls input[type="color"],
+        .controls input[type="checkbox"] {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .controls input[type="range"]:hover,
+        .controls input[type="number"]:hover,
+        .controls input[type="color"]:hover {
+            border-color: #777;
+        }
+
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-bottom: 20px;
+            width: 50%;
+            padding: 10px;
+
+        }
+
+        canvas {
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            background-image: linear-gradient(45deg, #d3d3d3 25%, transparent 25%), linear-gradient(-45deg, #d3d3d3 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #d3d3d3 75%), linear-gradient(-45deg, transparent 75%, #d3d3d3 75%);
+            background-size: 16px 16px;
+            background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+
+
+        }
+
+        button#downloadBtn {
+            padding: 10px 20px;
+            background-color: #eee;
+            color: #333;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3);
+            transition: background-color 0.3s ease;
+        }
+
+        button#downloadBtn:hover {
+            background-color: #0c912df6;
+            color: #fff;
+        }
+
+        input#imageInput {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        #colorPalette {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            margin: 2px;
+        }
+
+        #blurBackgroundToggle {
+            height: 40px;
+            float: left;
+            border-radius: 50;
+            cursor: pointer;
+        }
+
+        #colorPicker {
+            height: 50px;
+            width: 100%;
+        }
+
+        .upload {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            justify-content: center;
+            align-items: center;
+            padding: 45px;
+            border: 4px dashed #bbc2bdf6;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 40px 20px;
+            max-height: 100px;
+            width: 350px;
+        }
+    }
+        h2 {
+            max-height: 50px;
+            margin: 20px 50px;
+            color: #444;
+        }
+
+        @media (max-width:400px) {
+
+            .control-item,
+            .canvas-container {
+                flex-wrap: wrap;
+                flex-direction: column;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        hr {
+            /* Removes the default border */
+            height: 2px;
+            /* Sets the height of the line */
+            background-color: #333;
+            /* Color of the line */
+            margin: 20px 0;
+            /* Adds margin on top and bottom */
+        }
+
+        img {
+            width: 100%;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 99999;
+            top: 0;
+            left: 0;
+            background-color: #fafafa;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidenav a,
+        .sidenav h3 {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #1a1919;
+            display: block;
+            transition: 0.3s;
+            text-align: left;
+        }
+
+        .sidenav a:hover {
+            color: #33b40b;
+            text-decoration: none;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .main-menu {
+            background-color: #fff;
+            ;
+            overflow: hidden;
+            box-shadow: inset;
+            margin: 0px auto;
+            width: 100%;
+            max-width: 1200px;
+            color: #059943;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+            .sidenav a {
+                font-size: 18px;
+            }
+        }
+
+        p {
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #333;
+            margin: 0 0 16px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header"></header>
+    <div class="main-menu">
+        <a href="https://www.whatscrop.online/"
+            style="float:left;color:#30a50c;font-size:20px;padding:8px;border:0px solid red;">𝗪𝗛𝗔𝗧𝗦𝗖𝗥𝗢𝗣</a>
+        <div id="mySidenav" class="sidenav">
+
+            <a href="hhttps://www.whatscrop.online/">𝗪𝗛𝗔𝗧𝗦𝗖𝗥𝗢𝗣</a>
+            <hr>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
+            <a href="/about-us.html">About us</a>
+            <a href="/contact-us.html">Contact us</a>
+            <a href="/privacy-policy.html">Privacy</a>
+
+        </div>
+        <span style="font-size:30px;cursor:pointer;float:right;margin:1px 10px;" onclick="openNav()">&#9776;</span>
+    </div>
+    </header>
+    <h1>WhatsApp Full Dp Maker : Crop , Resize and Inhance </h1>
+
+
+    <div
+        style="display:flex;justify-content:space-between;width:900px;flex-wrap:wrap;border:0px solid rgb(0, 81, 255);">
+
+        <div class="control-item">
+
+            <div class="canvas-container">
+
+                <div class="upload">
+                    <label for="imageInput"
+                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                            <svg style="height:100px;color: #bbe2c5f6;width:20%;"
+                                class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                            </svg>
+                            <p style="color: #444;"><span class="font-semibold">Click to upload</span> or drag and drop
+                            </p>
+                            <p style="color: #444;">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        </div>
+                        <input id="imageInput" type="file" class="hidden" />
+                    </label>
+                </div>
+
+                <canvas id="canvas" width="600" height="600"></canvas>
+                <div class="control-item" style="margin:30px;">
+                    <div class="control">
+                        <label>Image Size: <input type="range" id="imageSize" min="10" max="100" value="100"></label>
+                    </div>
+                    <div class="control"><button id="downloadBtn">Download Image</button></div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div id="colorPalette" style="display: flex; gap: 10px; flex-wrap: wrap;">
+
+                    <!-- First row of colors -->
+                    <div class="color-block"
+                        style="width: 30px; height: 30px; background-color: #FFFFFF; border:1px solid #cfcbca;"
+                        data-color="#FFFFFF"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #F1C40F;"
+                        data-color="#F1C40F"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #E74C3C;"
+                        data-color="#E74C3C"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #3498DB;"
+                        data-color="#3498DB"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #2ECC71;"
+                        data-color="#2ECC71"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #8E44AD;"
+                        data-color="#8E44AD"></div>
+
+                    <!-- Second row of colors -->
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #1ABC9C;"
+                        data-color="#1ABC9C"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #D35400;"
+                        data-color="#D35400"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #34495E;"
+                        data-color="#34495E"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #BDC3C7;"
+                        data-color="#BDC3C7"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #7F8C8D;"
+                        data-color="#7F8C8D"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #E67E22;"
+                        data-color="#E67E22"></div>
+
+                    <!-- Third row of colors (light shades) -->
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #FDE3A7;"
+                        data-color="#FDE3A7"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #E8DAEF;"
+                        data-color="#E8DAEF"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #D5F5E3;"
+                        data-color="#D5F5E3"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #D6EAF8;"
+                        data-color="#D6EAF8"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #FCF3CF;"
+                        data-color="#FCF3CF"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #FADBD8;"
+                        data-color="#FADBD8"></div>
+
+                    <!-- Fourth row of colors (dark shades) -->
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #2C3E50;"
+                        data-color="#2C3E50"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #273746;"
+                        data-color="#273746"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #1C2833;"
+                        data-color="#1C2833"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #7B241C;"
+                        data-color="#7B241C"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #512E5F;"
+                        data-color="#512E5F"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #154360;"
+                        data-color="#154360"></div>
+
+                    <!-- Fifth row of colors (pastel shades) -->
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #FAD7A0;"
+                        data-color="#FAD7A0"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #A9CCE3;"
+                        data-color="#A9CCE3"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #ABEBC6;"
+                        data-color="#ABEBC6"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #F9E79F;"
+                        data-color="#F9E79F"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #F5B7B1;"
+                        data-color="#F5B7B1"></div>
+                    <div class="color-block" style="width: 30px; height: 30px; background-color: #D2B4DE;"
+                        data-color="#D2B4DE"></div>
+
+
+                </div>
+                <label>Add Background Color: <input type="color" id="colorPicker" value="#ffffff"></label>
+                <div style="border:0px solid red;width:100%;background-color: #f4faf8;padding:10px;border-radius:10px;">
+
+                    <label>Crop width Blur : (Recommended) <input type="checkbox" id="blurBackgroundToggle"></label>
+                    <label>Blur Amount: <input type="range" id="blurAmount" min="0" max="20" value="0"></label>
+                </div>
+            </div>
+
+        </div>
+
+
+        <h2>Advanced / Optional</h2>
+
+        <div class="control-item">
+            <div class="controls">
+
+                <label>Shadow Blur: <input type="range" id="shadowBlur" min="0" max="50" value="00"></label>
+                <label>Shadow X Offset: <input type="number" id="shadowX" value="0"></label>
+                <label>Shadow Y Offset: <input type="number" id="shadowY" value="0"></label>
+                <label>Shadow Color: <input type="color" id="shadowColor" value="#000000"></label>
+            </div>
+            <div class="controls">
+                <label>Border Color: <input type="color" id="borderColor" value="#1ABC9C"></label>
+                <label>Border Width: <input type="number" id="borderWidth" value="0"></label>
+            </div>
+
+
+
+
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const imageInput = document.getElementById('imageInput');
+        const shadowColorInput = document.getElementById('shadowColor');
+        const shadowBlurInput = document.getElementById('shadowBlur');
+        const shadowXInput = document.getElementById('shadowX');
+        const shadowYInput = document.getElementById('shadowY');
+        const borderColorInput = document.getElementById('borderColor');
+        const borderWidthInput = document.getElementById('borderWidth');
+        const imageSizeInput = document.getElementById('imageSize');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const colorPicker = document.getElementById('colorPicker');
+        const blurAmountInput = document.getElementById('blurAmount');
+        const blurBackgroundToggle = document.getElementById('blurBackgroundToggle');
+        const colorPalette = document.getElementById('colorPalette');
+
+        let uploadedImage = null;
+        let backgroundColor = '#ffffff';
+        let blurBackgroundEnabled = false;
+
+        // Event listeners
+        imageInput.addEventListener('change', handleImageUpload);
+        shadowBlurInput.addEventListener('input', drawImageWithShadow);
+        shadowXInput.addEventListener('input', drawImageWithShadow);
+        shadowYInput.addEventListener('input', drawImageWithShadow);
+        shadowColorInput.addEventListener('input', drawImageWithShadow);
+        borderColorInput.addEventListener('input', drawImageWithShadow);
+        borderWidthInput.addEventListener('input', drawImageWithShadow);
+        imageSizeInput.addEventListener('input', drawImageWithShadow);
+        blurAmountInput.addEventListener('input', drawImageWithShadow);
+        blurBackgroundToggle.addEventListener('change', () => {
+            blurBackgroundEnabled = blurBackgroundToggle.checked;
+            drawImageWithShadow();
+        });
+        colorPicker.addEventListener('input', () => {
+            backgroundColor = colorPicker.value;
+            drawImageWithShadow();
+        });
+
+        // Event listener for color palette blocks
+        colorPalette.addEventListener('click', function (event) {
+            if (event.target.classList.contains('color-block')) {
+                const selectedColor = event.target.getAttribute('data-color');
+                backgroundColor = selectedColor;
+                colorPicker.value = selectedColor; // Update color picker value
+                drawImageWithShadow();
+            }
+        });
+
+        downloadBtn.addEventListener('click', downloadImage);
+
+        // Handle image upload
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = new Image();
+                img.onload = function () {
+                    uploadedImage = img;
+                    drawImageWithShadow();
+                };
+                img.src = e.target.result;
+            };
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Draw image with shadow, border, background, and blur effect
+        function drawImageWithShadow() {
+            if (!uploadedImage) return;
+
+            // Clear canvas and set background color
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = backgroundColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Apply background image and blur if the toggle is enabled
+            if (blurBackgroundEnabled) {
+                const blurAmount = parseInt(blurAmountInput.value, 10);
+                ctx.filter = `blur(${blurAmount}px)`;
+
+                // Calculate the dimensions to cover the canvas
+                const canvasAspectRatio = canvas.width / canvas.height;
+                const imageAspectRatio = uploadedImage.width / uploadedImage.height;
+                let bgWidth, bgHeight, bgX, bgY;
+
+                if (imageAspectRatio > canvasAspectRatio) {
+                    bgHeight = canvas.height;
+                    bgWidth = bgHeight * imageAspectRatio;
+                    bgX = -(bgWidth - canvas.width) / 2; // Center horizontally
+                    bgY = 0;
+                } else {
+                    bgWidth = canvas.width;
+                    bgHeight = bgWidth / imageAspectRatio;
+                    bgX = 0;
+                    bgY = -(bgHeight - canvas.height) / 2; // Center vertically
+                }
+
+                // Draw the background image with blur
+                ctx.drawImage(uploadedImage, bgX, bgY, bgWidth, bgHeight);
+                ctx.filter = 'none'; // Reset filter for subsequent drawings
+            }
+
+            const shadowBlur = parseInt(shadowBlurInput.value, 10);
+            const shadowOffsetX = parseInt(shadowXInput.value, 10);
+            const shadowOffsetY = parseInt(shadowYInput.value, 10);
+            const shadowColor = shadowColorInput.value;
+            const borderColor = borderColorInput.value;
+            const borderWidth = parseInt(borderWidthInput.value, 10);
+            const imageSize = parseInt(imageSizeInput.value, 10);
+
+            // Calculate new image size for the foreground image
+            const canvasAspectRatio = canvas.width / canvas.height;
+            const imageAspectRatio = uploadedImage.width / uploadedImage.height;
+
+            let newWidth, newHeight;
+            if (imageAspectRatio > canvasAspectRatio) {
+                newWidth = canvas.width * (imageSize / 100);
+                newHeight = newWidth / imageAspectRatio;
+            } else {
+                newHeight = canvas.height * (imageSize / 100);
+                newWidth = newHeight * imageAspectRatio;
+            }
+
+            const offsetX = (canvas.width - newWidth) / 2;
+            const offsetY = (canvas.height - newHeight) / 2;
+
+            // Set shadow properties
+            ctx.shadowColor = shadowColor;
+            ctx.shadowBlur = shadowBlur;
+            ctx.shadowOffsetX = shadowOffsetX;
+            ctx.shadowOffsetY = shadowOffsetY;
+
+            // Draw border
+            ctx.fillStyle = borderColor;
+            ctx.fillRect(offsetX - borderWidth, offsetY - borderWidth, newWidth + 2 * borderWidth, newHeight + 2 * borderWidth);
+
+            // Draw image without shadow
+            ctx.shadowColor = 'transparent';
+            ctx.drawImage(uploadedImage, offsetX, offsetY, newWidth, newHeight);
+        }
+
+        // Download image
+        function downloadImage() {
+            if (!uploadedImage) return;
+
+            const link = document.createElement('a');
+            link.download = 'image_with_shadow_and_blur.png';
+            canvas.toBlob(function (blob) {
+                const url = URL.createObjectURL(blob);
+                link.href = url;
+                link.click();
+            }, 'image/png');
+        }
+
+    </script>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "300px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+</body>
+
+</html>
